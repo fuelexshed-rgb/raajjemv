@@ -2,25 +2,12 @@ import DOMPurify from 'dompurify'
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { fetchArticleBySlug, fetchPublishedList, type ArticleDetail, type ArticleListItem } from '../lib/api'
+import { formatDate } from '../lib/formatDate'
 import { ArticleCard } from '../components/ArticleCard'
 import { Footer } from '../components/Footer'
 import { Header } from '../components/Header'
 
 const MORE_ARTICLE_COUNT = 8
-
-function formatDate(iso: string) {
-  try {
-    return new Date(iso).toLocaleString(undefined, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-  } catch {
-    return ''
-  }
-}
 
 export function ArticlePage() {
   const { slug } = useParams<{ slug: string }>()
@@ -110,7 +97,7 @@ export function ArticlePage() {
         <h1 className="article-title">{article.title}</h1>
         <p className="article-byline">
           <span className="dhivehi-inline">{article.author_name}</span>
-          <span className="text-muted"> · {formatDate(article.published_at)}</span>
+          <span className="text-muted"> · {formatDate(article.published_at, { longMonth: true })}</span>
         </p>
 
         {article.featured_image_url && (
