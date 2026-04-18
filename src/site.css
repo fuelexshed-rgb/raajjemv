@@ -266,6 +266,7 @@ img {
 }
 
 .latest-news-banner-ticker-link {
+  font-family: var(--font-faruma);
   color: inherit;
   text-decoration: none;
   font-weight: 500;
@@ -278,6 +279,7 @@ img {
 }
 
 .latest-news-banner-ticker-mirror {
+  font-family: var(--font-faruma);
   font-weight: 500;
   white-space: nowrap;
 }
@@ -350,6 +352,7 @@ img {
   align-items: center;
   row-gap: 0.5rem;
   column-gap: 1.5rem;
+  font-family: var(--font-faruma);
   font-size: 1.15rem;
   font-weight: 500;
   color: var(--gray-600);
@@ -568,6 +571,7 @@ img {
 }
 
 .featured-excerpt {
+  font-family: var(--font-faruma);
   color: var(--gray-600);
   font-size: 1rem;
   line-height: 1.6;
@@ -631,6 +635,7 @@ img {
 }
 
 .news-card-excerpt {
+  font-family: var(--font-faruma);
   font-size: 0.875rem;
   color: var(--gray-600);
   margin: 0 0 auto;
