@@ -6,6 +6,11 @@ import { Footer } from '../components/Footer'
 import { Header } from '../components/Header'
 import { formatDate } from '../lib/formatDate'
 
+/** Top stories shown in ފަހުގެ ހަބަރު (latest) */
+const LATEST_COUNT = 8
+/** މުހިންމު ހަބަރު — full grid (6 works as 3×2; 8 as 4×2 on large screens) */
+const MUST_READ_COUNT = 8
+
 export function HomePage() {
   const [articles, setArticles] = useState<ArticleListItem[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -25,10 +30,10 @@ export function HomePage() {
     return { hero: h, others: o }
   }, [articles])
 
-  const latest = others.slice(0, 8)
-  const mustRead = others.slice(0, 4)
-  const editorHero = others[4]
-  const editorRow = others.slice(5, 9)
+  const latest = others.slice(0, LATEST_COUNT)
+  const mustRead = others.slice(0, MUST_READ_COUNT)
+  const editorHero = others[MUST_READ_COUNT]
+  const editorRow = others.slice(MUST_READ_COUNT + 1, MUST_READ_COUNT + 5)
 
   return (
     <div className="page" dir="rtl" lang="dv">
@@ -86,7 +91,7 @@ export function HomePage() {
           <div className="container">
             <div className="section-head">
               <h2 className="section-title dhivehi-inline">ފަހުގެ ހަބަރު</h2>
-              <Link to="#latest" className="see-all">
+              <Link to="/#latest" className="see-all">
                 See all
               </Link>
             </div>
@@ -104,28 +109,14 @@ export function HomePage() {
           <div className="container">
             <div className="section-head">
               <h2 className="section-title dhivehi-inline">މުހިންމު ހަބަރު</h2>
-              <Link to="#must-read" className="see-all">
+              <Link to="/#must-read" className="see-all">
                 See all
               </Link>
             </div>
             <div className={`must-grid must-count-${mustRead.length}`}>
-              {mustRead[0] && (
-                <div className="must-side">
-                  <ArticleCard article={mustRead[0]} className="card-compact" />
-                </div>
-              )}
-              {mustRead[1] && (
-                <div className="must-center">
-                  <ArticleCard article={mustRead[1]} className="card-compact" />
-                </div>
-              )}
-              {mustRead.length > 2 && (
-                <div className="must-stack">
-                  {mustRead.slice(2).map((a) => (
-                    <ArticleCard key={a.id} article={a} className="card-compact" />
-                  ))}
-                </div>
-              )}
+              {mustRead.map((a) => (
+                <ArticleCard key={a.id} article={a} className="card-compact" />
+              ))}
             </div>
           </div>
         </section>
@@ -136,7 +127,7 @@ export function HomePage() {
           <div className="container">
             <div className="section-head">
               <h2 className="section-title dhivehi-inline">ފާހަގަކޮށްލެވޭ ހަބަރު</h2>
-              <Link to="#editors" className="see-all">
+              <Link to="/#editors" className="see-all">
                 See all
               </Link>
             </div>

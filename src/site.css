@@ -481,6 +481,14 @@ img {
   background: var(--gray-100);
 }
 
+/* In-page anchors (#latest, footer links): clear sticky header / ticker */
+#latest,
+#must-read,
+#editors,
+#newsletter {
+  scroll-margin-top: 6rem;
+}
+
 .article-more-section {
   border-top: 1px solid var(--border);
   background: var(--white);
@@ -648,17 +656,43 @@ img {
   gap: 1.5rem;
 }
 
-@media (min-width: 1000px) {
-  .must-grid.must-count-3,
-  .must-grid.must-count-4 {
-    grid-template-columns: 1fr 1.4fr 1fr;
-    align-items: start;
+/* Sm+: multi-column; large: 3-across (3/6), 4-across (7/8) for full rows */
+@media (min-width: 640px) {
+  .must-grid.must-count-2,
+  .must-grid.must-count-4,
+  .must-grid.must-count-5,
+  .must-grid.must-count-6,
+  .must-grid.must-count-7,
+  .must-grid.must-count-8 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .must-grid.must-count-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .must-grid.must-count-5,
+  .must-grid.must-count-6 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .must-grid.must-count-7,
+  .must-grid.must-count-8 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 640px) {
+  .must-grid.must-count-1 {
+    max-width: 26rem;
+    margin-inline: auto;
   }
 }
 
 /*
- * Must read uses uneven column widths (1fr / 1.4fr / 1fr). With aspect-ratio images,
- * the wider middle column gets a taller image block — fixed height keeps cards aligned.
+ * Fixed image height keeps card tops aligned within the must-read grid (esp. 2×2 and 3-across).
  */
 .must-grid .news-card-img-wrap {
   aspect-ratio: unset;
@@ -688,12 +722,6 @@ img {
   overflow: hidden;
   /* Reserve three lines so short titles don’t shrink the card vs neighbors */
   min-height: calc(1.2rem * 1.42 * 3);
-}
-
-.must-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
 }
 
 /* ——— Editor pick ——— */
