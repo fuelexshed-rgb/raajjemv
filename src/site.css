@@ -627,33 +627,19 @@ img {
 
 .news-card-title {
   font-family: var(--font-section-heading);
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.42;
   margin: 0 0 0.5rem;
   text-align: start;
 }
 
-.news-card-excerpt {
-  font-family: var(--font-faruma);
-  font-size: 0.875rem;
-  color: var(--gray-600);
-  margin: 0 0 auto;
-  text-align: start;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 .news-card-meta {
   font-size: 0.8rem;
   color: var(--gray-400);
-  margin: 0.75rem 0 0;
-}
-
-.card-compact .news-card-excerpt {
-  display: none;
+  margin-top: auto;
+  padding-top: 0.75rem;
+  margin-bottom: 0;
 }
 
 /* ——— Must read ——— */
@@ -701,7 +687,7 @@ img {
   -webkit-box-orient: vertical;
   overflow: hidden;
   /* Reserve three lines so short titles don’t shrink the card vs neighbors */
-  min-height: calc(1.3rem * 1.42 * 3);
+  min-height: calc(1.2rem * 1.42 * 3);
 }
 
 .must-stack {

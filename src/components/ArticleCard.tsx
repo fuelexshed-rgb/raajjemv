@@ -18,7 +18,6 @@ export function ArticleCard({
       <div className="news-card-body">
         {article.categories?.name && <span className="cat-pill">{article.categories.name}</span>}
         <h3 className="news-card-title">{article.title}</h3>
-        {article.summary && <p className="news-card-excerpt">{article.summary}</p>}
         <p className="news-card-meta">
           {article.author_name} · {formatDate(article.published_at)}
         </p>
