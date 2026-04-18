@@ -352,7 +352,7 @@ img {
   align-items: center;
   row-gap: 0.5rem;
   column-gap: 1.5rem;
-  font-family: var(--font-faruma);
+  font-family: var(--font-section-heading);
   font-size: 1.15rem;
   font-weight: 500;
   color: var(--gray-600);
