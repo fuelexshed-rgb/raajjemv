@@ -2,8 +2,6 @@ import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { fetchCategories, fetchPublishedList, type Category } from '../lib/api'
 
-const cmsUrl = import.meta.env.VITE_CMS_URL
-
 /** Ticker duration scales with how many stories so long lists stay readable */
 function bannerTickerDurationSec(count: number): number {
   if (count <= 0) return 34
@@ -65,22 +63,6 @@ export function Header() {
                 <path d="M21 21l-4.35-4.35" />
               </svg>
             </Link>
-            <a
-              className="icon-btn"
-              href={cmsUrl || '#'}
-              target={cmsUrl ? '_blank' : undefined}
-              rel={cmsUrl ? 'noopener noreferrer' : undefined}
-              title={cmsUrl ? 'Open CMS' : 'Set VITE_CMS_URL in .env'}
-              aria-label="Open CMS"
-              onClick={(e) => {
-                if (!cmsUrl) e.preventDefault()
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
-              </svg>
-            </a>
-            <span className="avatar-placeholder" aria-hidden />
           </div>
         </div>
       </div>
