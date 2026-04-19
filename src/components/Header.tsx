@@ -46,12 +46,18 @@ export function Header() {
           <nav className="nav-main" aria-label="Primary">
             {categories.length > 0 ? (
               categories.map((c) => (
-                <NavLink key={c.slug} to={`/category/${c.slug}`} className="nav-main-link">
+                <NavLink
+                  key={c.slug}
+                  to={`/category/${c.slug}`}
+                  className={({ isActive }) =>
+                    `nav-main-link home-category-pill${isActive ? ' active' : ''}`
+                  }
+                >
                   {c.name}
                 </NavLink>
               ))
             ) : (
-              <Link to="/#latest" className="nav-main-link">
+              <Link to="/#latest" className="nav-main-link home-category-pill">
                 Latest
               </Link>
             )}

@@ -13,6 +13,9 @@ const cols: { title: string; links: FooterLink[] }[] = [
   {
     title: 'Discover',
     links: [
+      { label: 'ކެޓަގަރީތައް', to: '/#categories', className: 'dhivehi-inline' },
+      { label: 'ޕޮޕިޔުލޭރު', to: '/#popular', className: 'dhivehi-inline' },
+      { label: 'ގިނައިން ކިޔާފައިވާ', to: '/#most-read', className: 'dhivehi-inline' },
       { label: 'ފާހަގަކޮށްލެވޭ ހަބަރު', to: '/#editors', className: 'dhivehi-inline' },
       { label: 'Stories', to: '/#latest' },
     ],
