@@ -941,7 +941,7 @@ img {
 .editor-hero-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.88), transparent 50%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.62) 45%, rgba(0, 0, 0, 0.2) 100%);
 }
 
 .editor-hero-text {
@@ -966,6 +966,37 @@ img {
   opacity: 0.95;
   max-width: 40rem;
   text-align: start;
+}
+
+@media (max-width: 767px) {
+  /*
+   * Keep all editor hero text visible on small screens:
+   * text stays inside the image card, but participates in layout so
+   * card height can grow instead of clipping overflow.
+   */
+  .editor-hero {
+    display: flex;
+    align-items: flex-end;
+    min-height: 360px;
+  }
+
+  .editor-hero-text {
+    position: relative;
+    bottom: auto;
+    inset-inline: auto;
+    width: 100%;
+    z-index: 1;
+    padding: 1.35rem 1rem;
+  }
+
+  .editor-hero-text h3 {
+    font-size: clamp(1.35rem, 6vw, 1.8rem);
+    line-height: 1.4;
+  }
+
+  .editor-hero-text p {
+    max-width: none;
+  }
 }
 
 .grid-editors-sub {

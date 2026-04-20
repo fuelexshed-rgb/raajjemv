@@ -4,8 +4,8 @@ import { fetchCategories, fetchPublishedList, type Category } from '../lib/api'
 
 /** Ticker duration scales with how many stories so long lists stay readable */
 function bannerTickerDurationSec(count: number): number {
-  if (count <= 0) return 34
-  return Math.min(130, Math.max(34, Math.round(count * 2.35)))
+  if (count <= 0) return 55
+  return Math.min(180, Math.max(55, Math.round(count * 3.2)))
 }
 
 export function Header() {
