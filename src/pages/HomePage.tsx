@@ -14,6 +14,8 @@ const MUST_READ_COUNT = 6
 const POPULAR_COUNT = 6
 /** ގިނައިން ކިޔާފައިވާ — following window (no view analytics; distinct feed slice) */
 const MOST_READ_COUNT = 6
+/** Home category block card count */
+const HOME_CATEGORY_SECTION_COUNT = 4
 
 export function HomePage() {
   const [articles, setArticles] = useState<ArticleListItem[]>([])
@@ -55,19 +57,42 @@ export function HomePage() {
       }
     }
     const mustEnd = LATEST_COUNT + MUST_READ_COUNT
-    /** Hero + sub-row come right after latest + must-read (same as before extra sections). */
-    const editorStart = mustEnd
-    const afterEditors = editorStart + 1 + EDITOR_ROW_LEN
+    const afterMust = others.slice(mustEnd)
+    const editorHero = afterMust[0] ?? null
+    const afterEditorHero = editorHero ? afterMust.slice(1) : afterMust
+    /**
+     * Keep Editors row up to 4 items, but preserve at least one item for Popular
+     * whenever there are remaining articles after the editor hero.
+     */
+    const editorRowCount = Math.min(
+      EDITOR_ROW_LEN,
+      Math.max(0, afterEditorHero.length > 0 ? afterEditorHero.length - 1 : 0),
+    )
+    const editorRow = afterEditorHero.slice(0, editorRowCount)
+    const afterEditors = afterEditorHero.slice(editorRowCount)
 
     return {
       latest: others.slice(0, LATEST_COUNT),
       mustRead: others.slice(LATEST_COUNT, mustEnd),
-      editorHero: others[editorStart] ?? null,
-      editorRow: others.slice(editorStart + 1, editorStart + 1 + EDITOR_ROW_LEN),
-      popular: others.slice(afterEditors, afterEditors + POPULAR_COUNT),
-      mostRead: others.slice(afterEditors + POPULAR_COUNT, afterEditors + POPULAR_COUNT + MOST_READ_COUNT),
+      editorHero,
+      editorRow,
+      popular: afterEditors.slice(0, POPULAR_COUNT),
+      mostRead: afterEditors.slice(POPULAR_COUNT, POPULAR_COUNT + MOST_READ_COUNT),
     }
   }, [others])
+
+  const categorySections = useMemo(() => {
+    if (!categories.length || !articles.length) return [] as { category: Category; items: ArticleListItem[] }[]
+
+    return categories
+      .map((category) => ({
+        category,
+        items: articles
+          .filter((article) => article.categories?.slug === category.slug)
+          .slice(0, HOME_CATEGORY_SECTION_COUNT),
+      }))
+      .filter((section) => section.items.length > 0)
+  }, [categories, articles])
 
   return (
     <div className="page" dir="rtl" lang="dv">
@@ -207,6 +232,48 @@ export function HomePage() {
                 <Link key={c.slug} to={`/category/${c.slug}`} className="home-category-pill">
                   {c.name}
                 </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {categorySections.length > 0 && (
+        <section className="section" id="category-sections">
+          <div className="container">
+            <div className="home-category-sections-grid">
+              {categorySections.map((section) => (
+                <article
+                  key={section.category.slug}
+                  className="home-category-list-section"
+                  id={`category-${section.category.slug}`}
+                >
+                  <div className="section-head">
+                    <h2 className="section-title dhivehi-inline">{section.category.name}</h2>
+                    <Link to={`/category/${section.category.slug}`} className="see-all">
+                      See all
+                    </Link>
+                  </div>
+                  <div className="home-category-list">
+                    {section.items.map((a, index) => (
+                      <Link key={a.id} to={`/article/${a.slug}`} className="home-category-list-item">
+                        <span className="home-category-list-rank">{index + 1}</span>
+                        <img
+                          src={a.featured_image_url || '/placeholder-news.svg'}
+                          alt=""
+                          className="home-category-list-thumb"
+                          loading="lazy"
+                        />
+                        <div className="home-category-list-copy">
+                          <h3 className="home-category-list-title">{a.title}</h3>
+                          <p className="home-category-list-meta">
+                            {a.author_name} · {formatDate(a.published_at)}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </article>
               ))}
             </div>
           </div>

@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState, type CSSProperties } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type FormEvent } from 'react'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { fetchCategories, fetchPublishedList, type Category } from '../lib/api'
 
 /** Ticker duration scales with how many stories so long lists stay readable */
@@ -11,6 +11,10 @@ function bannerTickerDurationSec(count: number): number {
 export function Header() {
   const [categories, setCategories] = useState<Category[]>([])
   const [headlines, setHeadlines] = useState<{ title: string; slug: string }[]>([])
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchInput, setSearchInput] = useState('')
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetchCategories()
@@ -35,6 +39,19 @@ export function Header() {
     const more = headlines.length > 3 ? ` and ${headlines.length - 3} more` : ''
     return `Latest news, ${headlines.length} stories: ${sample}${more}`
   }, [headlines])
+
+  useEffect(() => {
+    if (!searchOpen) return
+    searchInputRef.current?.focus()
+  }, [searchOpen])
+
+  function handleSearchSubmit(e: FormEvent) {
+    e.preventDefault()
+    const next = searchInput.trim()
+    if (!next) return
+    navigate(`/search?q=${encodeURIComponent(next)}`)
+    setSearchOpen(false)
+  }
 
   return (
     <header className="site-header">
@@ -63,12 +80,43 @@ export function Header() {
             )}
           </nav>
           <div className="header-actions">
-            <Link to="/search" className="icon-btn" aria-label="Search articles">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                <circle cx="11" cy="11" r="7" />
-                <path d="M21 21l-4.35-4.35" />
-              </svg>
-            </Link>
+            <form className={`header-search${searchOpen ? ' is-open' : ''}`} onSubmit={handleSearchSubmit} role="search">
+              <label htmlFor="header-search-input" className="visually-hidden">
+                Search articles
+              </label>
+              <input
+                ref={searchInputRef}
+                id="header-search-input"
+                type="search"
+                className="header-search-input"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder="ހޯދާ"
+                autoComplete="off"
+                enterKeyHint="search"
+              />
+              <button
+                type="button"
+                className="icon-btn header-search-toggle"
+                aria-label="Search articles"
+                aria-expanded={searchOpen}
+                onClick={() => {
+                  if (!searchOpen) {
+                    setSearchOpen(true)
+                    return
+                  }
+                  const next = searchInput.trim()
+                  if (!next) return
+                  navigate(`/search?q=${encodeURIComponent(next)}`)
+                  setSearchOpen(false)
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="M21 21l-4.35-4.35" />
+                </svg>
+              </button>
+            </form>
           </div>
         </div>
       </div>
